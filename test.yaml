@@ -1,0 +1,10 @@
+- filename: sample1.Rmd
+  url: something.com
+  description: A great file
+- filename: sample2.Rmd
+  url: somethingelse.com
+  description: Another great file
+- filename: sample3.Rmd
+  url: jigga.com
+  description: This file is so,so
+
