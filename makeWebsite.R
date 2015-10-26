@@ -52,34 +52,46 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
         ## prepare the page-specific parameters
         ## This is used to generate the footers for each page
         params <- list()
+
+        ## parse the parameters
+        current_filename <- paste0(strsplit(files[[i]]$filename, ".Rmd"), ".html")
+        params$current <- current_filename
+
         params$previous <- NULL
-        if (i > 1) params$previous <- files[[i-1]]$filename
-        
-        params$current <- files[[i]]$filename
-        
+        if (i > 1) {
+            previous_filename <- paste0(strsplit(files[[i-1]]$filename, ".Rmd"), ".html")
+            params$previous <- previous_filename
+            params$previous_desc <- files[[i-1]]$description
+        }
+
         params$nxt <- NULL
-        if (i < length(files)) params$nxt <- files[[i+1]]$filename
-        
+        if (i < length(files)) {
+            next_filename <- paste0(strsplit(files[[i+1]]$filename, ".Rmd"), ".html")
+            params$nxt <- next_filename
+            params$nxt_desc <- files[[i+1]]$description
+        }
+
         ## create page-specific footer by merging parameters into template and writing to disk
-        tmp_include_file_base <- strsplit(files[[i]]$filename, ".Rmd")
-        tmp_footer_path <- paste0(output_path, "include_", tmp_include_file_base, ".html")
-        pandoc_template(metadata = params, 
-                        template = footer_template, 
-                        output = tmp_footer_path)
-        
+        tmp_footer_include_path <- paste0(gen_includes_path, "include_", current_filename)
+        pandoc_template(metadata = params,
+                        template = footer_template,
+                        output = tmp_footer_include_path)
+
         ## render HTML pages for each file
         ## use the rendered footer as an include
         rmarkdown::render(input_path, 
                           output_format = html_document(
-                              includes = includes(after_body = tmp_footer_path),
+                              includes = includes(after_body = tmp_footer_include_path,
+                                                  before_body = before_body_include_path,
+                                                  in_header = in_header_include_path),
                               mathjax = NULL,
                               self_contained = FALSE,
                               theme = theme,
                               highlight = highlight,
                               lib_dir = "libs"),
                           output_options = output_options,
-                          output_file =  NULL,
-                          output_dir = output_path,
+                          output_file =  current_filename,
+                          output_dir = NULL,
                           runtime = "static",
                           clean = TRUE,
                           params = NULL,
