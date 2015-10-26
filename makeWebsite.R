@@ -79,7 +79,7 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
 
         ## render HTML pages for each file
         ## use the rendered footer as an include
-        rmarkdown::render(input_path, 
+        rmarkdown::render(input_path,
                           output_format = html_document(
                               includes = includes(after_body = tmp_footer_include_path,
                                                   before_body = before_body_include_path,
