@@ -19,16 +19,25 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
     base_path <- paste0(getwd(), "/")
 
     ## include path
-    include_directory <- "include"
-    
+    include_directory <- "_includes"
+    include_path <- paste0(base_path, include_directory, "/")
+    before_body_include_path <- paste0(include_path, 'before_body.html')
+    in_header_include_path <- paste0(include_path, 'in_header.html')
+
+    ## generated includes path
+    gen_includes_directory <- "_gen_includes"
+    gen_includes_path <- paste0(base_path, gen_includes_directory, "/")
+    if(!dir.exists(gen_includes_path))
+        dir.create(gen_includes_path)
+
     ## libs path
     libs_directory <- "libs"
     libs_path <- paste0(base_path, libs_directory, "/")
 
     ## template path
-    template_directory <- "templates"
-    template_path <- paste0(basePath, template_directory, "/")
-    
+    template_directory <- "_templates"
+    template_path <- paste0(base_path, template_directory, "/")
+
     if(!dir.exists(template_path))
         dir.create(template_path)
 
@@ -42,8 +51,9 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
     for (i in 1:length(files)) {
 
         ## prepare the path to the input file
-        input_path <- paste0(basePath, files[[i]]$filename)
-        
+        ## Must read the .Rmd file
+        input_path <- paste0(base_path, files[[i]]$filename)
+
         ## prepare the page-specific parameters
         ## This is used to generate the footers for each page
         params <- list()
@@ -71,7 +81,7 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
                               self_contained = FALSE,
                               theme = theme,
                               highlight = highlight,
-                              lib_dir = libs_path),
+                              lib_dir = "libs"),
                           output_options = output_options,
                           output_file =  NULL,
                           output_dir = output_path,
