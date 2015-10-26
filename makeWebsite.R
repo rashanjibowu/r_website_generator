@@ -1,19 +1,20 @@
 
 ## set up environment
-library(rmarkdown)
-library(yaml)
+require(rmarkdown)
+require(yaml)
 
 ## Specify a YAML file that contains the files to be converted into a website
-## The order of the files specified in the YAML file impact the order of links 
+## The order of the files specified in the YAML file impact the order of links
 ## presented in the footer navigation
+## Input files cannot have an underscore in the filename
 makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", verbose = FALSE) {
 
-    ## input must be a string    
+    ## input must be a string
     stopifnot(!is.null(yml.file), is.character(yml.file))
-    
+
     ## read yaml
     files <- yaml.load_file(yml.file)
-    
+
     ## set up paths
     basePath <- paste0(getwd(), "/")
     
@@ -37,7 +38,7 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
     
     if(!dir.exists(template_path))
         dir.create(template_path)
-    
+
     footer_template <- paste0(template_path, "/footer_template.html")
     
     ## create a list of output options
@@ -46,7 +47,7 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
     output_options$mathjax <- NULL
     
     for (i in 1:length(files)) {
-        
+
         ## prepare the path to the input file
         input_path <- paste0(basePath, files[[i]]$filename)
         
