@@ -96,9 +96,10 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
                           clean = TRUE,
                           params = NULL,
                           quiet = !verbose)
-        
-        print(paste("We are making a website using", files[[i]]$filename))    
+        if(verbose)
+            print(paste("We are making a website using", files[[i]]$filename))
     }
-    
-    print(paste0("Website complete! The files are here: ", output_path))
+
+    if (verbose)
+        print("Website complete! Check it out!")
 }
