@@ -16,22 +16,15 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
     files <- yaml.load_file(yml.file)
 
     ## set up paths
-    basePath <- paste0(getwd(), "/")
-    
-    ## output path
-    output_directory <- "output"
-    output_path <- paste0(basePath, output_directory, "/")
-    
-    if(!dir.exists(output_path)) 
-        dir.create(output_path)
-    
+    base_path <- paste0(getwd(), "/")
+
     ## include path
     include_directory <- "include"
     
     ## libs path
     libs_directory <- "libs"
-    libs_path <- paste0(output_path, libs_directory, "/")
-    
+    libs_path <- paste0(base_path, libs_directory, "/")
+
     ## template path
     template_directory <- "templates"
     template_path <- paste0(basePath, template_directory, "/")
