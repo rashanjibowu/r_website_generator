@@ -42,12 +42,7 @@ makeWebsite <- function (yml.file, theme = "cerulean", highlight = "zenburn", ve
         dir.create(template_path)
 
     footer_template <- paste0(template_path, "/footer_template.html")
-    
-    ## create a list of output options
-    output_options <- list()
-    output_options$self_contained <- FALSE
-    output_options$mathjax <- NULL
-    
+
     for (i in 1:length(files)) {
 
         ## prepare the path to the input file
